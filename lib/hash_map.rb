@@ -31,8 +31,17 @@ class HashMap
     bucket_index = hash(key) % @capacity
     @buckets[bucket_index].value
   end
+
+  def has?(key)
+    bucket_index = hash(key) % @capacity
+    return true if !@buckets[bucket_index].nil? && @buckets[bucket_index].key == (key)
+
+    false
+  end
 end
 
 hash_map = HashMap.new
 hash_map.set("test", 5)
 p hash_map.get("test")
+p hash_map.has?("test")
+p hash_map.has?("NOPE")
