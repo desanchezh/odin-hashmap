@@ -1,4 +1,8 @@
+require_relative "linked_list"
+
 class HashMap
+  attr_accessor :capacity, :buckets
+
   def initialize
     @load_factor = 1
     @capacity = 16
@@ -14,4 +18,21 @@ class HashMap
 
     hash_code
   end
+
+  # HOW TO CHECK FOR COLLISIONS BEFORE OVERWRITING VALUE?
+  # NEEDS GROWTH LOGIC ie. when load factor is reached
+  def set(key, value)
+    node = Node.new(key, value)
+    bucket_index = hash(key) % @capacity
+    @buckets[bucket_index] = node
+  end
+
+  def get(key)
+    bucket_index = hash(key) % @capacity
+    @buckets[bucket_index].value
+  end
 end
+
+hash_map = HashMap.new
+hash_map.set("test", 5)
+p hash_map.get("test")
