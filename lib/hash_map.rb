@@ -38,10 +38,22 @@ class HashMap
 
     false
   end
+
+  # Will not work if multiple k/v pairs...DELETES ENTIRE BUCKET
+  def remove(key)
+    return nil unless has?(key)
+
+    deleted_value = get(key)
+    bucket_index = hash(key) % @capacity
+    @buckets[bucket_index] = nil
+    deleted_value
+  end
 end
 
 hash_map = HashMap.new
 hash_map.set("test", 5)
-p hash_map.get("test")
-p hash_map.has?("test")
-p hash_map.has?("NOPE")
+hash_map.get("test")
+hash_map.has?("test")
+p hash_map.buckets
+p hash_map.remove("test")
+p hash_map.buckets
