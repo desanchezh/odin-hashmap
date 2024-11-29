@@ -22,19 +22,24 @@ class HashMap
   # HOW TO CHECK FOR COLLISIONS BEFORE OVERWRITING VALUE?
   # NEEDS GROWTH LOGIC ie. when load factor is reached
   def set(key, value)
-    node = Node.new(key, value)
-    bucket_index = hash(key) % @capacity
-    @buckets[bucket_index] = node
+    linked_list = LinkedList.new
+    index = hash(key) % @capacity
+    raise IndexError if index.negative? || index >= @buckets.length
+
+    @buckets[index] = linked_list.append(key, value)
   end
 
   def get(key)
-    bucket_index = hash(key) % @capacity
-    @buckets[bucket_index].value
+    index = hash(key) % @capacity
+    raise IndexError if index.negative? || index >= @buckets.length
+
+    @buckets[index].value
   end
 
   def has?(key)
-    bucket_index = hash(key) % @capacity
-    return true if !@buckets[bucket_index].nil? && @buckets[bucket_index].key == (key)
+    index = hash(key) % @capacity
+    raise IndexError if index.negative? || index >= @buckets.length
+    return true if !@buckets[index].nil? && @buckets[index].key == (key)
 
     false
   end
@@ -44,9 +49,15 @@ class HashMap
     return nil unless has?(key)
 
     deleted_value = get(key)
-    bucket_index = hash(key) % @capacity
-    @buckets[bucket_index] = nil
+    index = hash(key) % @capacity
+    raise IndexError if index.negative? || index >= @buckets.length
+
+    @buckets[index] = nil
     deleted_value
+  end
+
+  def length
+    @buckets.length - @buckets.count(nil)
   end
 end
 
@@ -55,5 +66,4 @@ hash_map.set("test", 5)
 hash_map.get("test")
 hash_map.has?("test")
 p hash_map.buckets
-p hash_map.remove("test")
-p hash_map.buckets
+p hash_map.length
