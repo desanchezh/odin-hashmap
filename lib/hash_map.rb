@@ -4,9 +4,9 @@ class HashMap
   attr_accessor :capacity, :buckets
 
   def initialize
-    @load_factor = 1
+    @load_factor = 0.75
     @capacity = 16
-    @buckets = Array.new(16)
+    @buckets = Array.new(@capacity)
   end
 
   # key should be string
@@ -71,6 +71,17 @@ class HashMap
     end
     values
   end
+
+  def entries
+    entries = []
+    @buckets.each do |bucket|
+      pair = []
+      pair << bucket.key unless bucket.nil?
+      pair << bucket.value unless bucket.nil?
+      entries << pair unless pair.empty?
+    end
+    entries
+  end
 end
 
 hash_map = HashMap.new
@@ -80,3 +91,4 @@ hash_map.has?("test")
 p hash_map.buckets
 p hash_map.length
 p hash_map.values
+p hash_map.entries
