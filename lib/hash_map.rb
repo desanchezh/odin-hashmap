@@ -59,6 +59,18 @@ class HashMap
   def length
     @buckets.length - @buckets.count(nil)
   end
+
+  def clear
+    @buckets = Array.new(16)
+  end
+
+  def values
+    values = []
+    @buckets.each do |bucket|
+      values << bucket.value unless bucket.nil?
+    end
+    values
+  end
 end
 
 hash_map = HashMap.new
@@ -67,3 +79,4 @@ hash_map.get("test")
 hash_map.has?("test")
 p hash_map.buckets
 p hash_map.length
+p hash_map.values
