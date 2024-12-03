@@ -14,7 +14,10 @@ test.set("jacket", "blue")
 test.set("kite", "pink")
 test.set("lion", "golden")
 
-puts test.buckets
-p test.entries
+test.buckets
+test.entries
 test.set("lion", "pink")
+test.buckets
+test.set("moon", "silver")
 puts test.buckets
+p test.size

@@ -31,6 +31,7 @@ class HashMap
     index = hash(key) % @capacity
     raise IndexError if index.negative? || index >= @buckets.length
 
+    check_capacity
     current = @buckets[index].head
     if has?(key)
       @buckets.size.times do
@@ -41,6 +42,17 @@ class HashMap
       end
     else
       @buckets[index].append(key, value)
+    end
+  end
+
+  def check_capacity
+    return unless (size + 1) > (@capacity * @load_factor)
+
+    current_entries = entries
+    @capacity *= 2
+    clear
+    current_entries.each do |entry|
+      set(entry[0], entry[1]) unless entry.nil?
     end
   end
 
