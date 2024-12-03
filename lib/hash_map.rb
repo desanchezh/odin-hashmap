@@ -56,7 +56,6 @@ class HashMap
     false
   end
 
-  # Will not work if multiple k/v pairs...DELETES ENTIRE BUCKET
   def remove(key)
     return nil unless has?(key)
 
@@ -87,22 +86,38 @@ class HashMap
   def values
     values = []
     @buckets.each do |bucket|
-      values << bucket.value unless bucket.nil?
+      next if bucket.nil?
+
+      current = bucket.head
+      bucket.size.times do
+        unless current.nil?
+          values << current.value
+          current = current.next_node
+        end
+      end
     end
     values
   end
 
   def size
-    @buckets.length - @buckets.count(nil)
+    values.count
   end
 
   def entries
     entries = []
     @buckets.each do |bucket|
-      pair = []
-      pair << bucket.key unless bucket.nil?
-      pair << bucket.value unless bucket.nil?
-      entries << pair unless pair.empty?
+      next if bucket.nil?
+
+      current = bucket.head
+      bucket.size.times do
+        next if current.nil?
+
+        pair = []
+        pair << current.key
+        pair << current.value
+        current = current.next_node
+        entries << pair
+      end
     end
     entries
   end

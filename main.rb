@@ -15,7 +15,4 @@ test.set("kite", "pink")
 test.set("lion", "golden")
 
 puts test.buckets
-p test.remove("hat")
-puts test.buckets
-test.clear
-p test
+p test.entries
