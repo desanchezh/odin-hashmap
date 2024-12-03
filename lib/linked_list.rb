@@ -80,7 +80,7 @@ class LinkedList
     current = @head
     string_display = ""
     size.times do
-      string_display << "( #{current.value} ) -> "
+      string_display << "(#{current.key}, #{current.value} ) -> "
       current = current.next_node
     end
     string_display << "nil"

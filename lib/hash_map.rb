@@ -6,10 +6,16 @@ class HashMap
   def initialize
     @load_factor = 0.75
     @capacity = 16
-    @buckets = Array.new(@capacity)
+    @buckets = []
+    create_buckets(@capacity)
   end
 
-  # key should be string
+  def create_buckets(capacity)
+    capacity.times do
+      @buckets.push(LinkedList.new)
+    end
+  end
+
   def hash(key)
     hash_code = 0
     prime_number = 31
@@ -19,21 +25,29 @@ class HashMap
     hash_code
   end
 
-  # HOW TO CHECK FOR COLLISIONS BEFORE OVERWRITING VALUE?
-  # NEEDS GROWTH LOGIC ie. when load factor is reached
+  # key should be string
+
+  # node should be linked list to deal with collisions
   def set(key, value)
-    linked_list = LinkedList.new
     index = hash(key) % @capacity
     raise IndexError if index.negative? || index >= @buckets.length
 
-    @buckets[index] = linked_list.append(key, value)
+    @buckets[index].append(key, value)
   end
 
   def get(key)
     index = hash(key) % @capacity
     raise IndexError if index.negative? || index >= @buckets.length
 
-    @buckets[index].value
+    current = @buckets[index].head
+    value = []
+    @buckets.size.times do
+      unless current.nil?
+        value << current.value if current.key == key
+        current = current.next_node
+      end
+    end
+    value
   end
 
   def has?(key)
@@ -56,10 +70,6 @@ class HashMap
     deleted_value
   end
 
-  def length
-    @buckets.length - @buckets.count(nil)
-  end
-
   def clear
     @buckets = Array.new(16)
   end
@@ -70,6 +80,10 @@ class HashMap
       values << bucket.value unless bucket.nil?
     end
     values
+  end
+
+  def size
+    @buckets.length - @buckets.count(nil)
   end
 
   def entries
@@ -83,12 +97,3 @@ class HashMap
     entries
   end
 end
-
-hash_map = HashMap.new
-hash_map.set("test", 5)
-hash_map.get("test")
-hash_map.has?("test")
-p hash_map.buckets
-p hash_map.length
-p hash_map.values
-p hash_map.entries
