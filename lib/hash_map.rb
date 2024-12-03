@@ -51,9 +51,7 @@ class HashMap
   end
 
   def has?(key)
-    index = hash(key) % @capacity
-    raise IndexError if index.negative? || index >= @buckets.length
-    return true if !@buckets[index].nil? && @buckets[index].key == (key)
+    return true if get(key).any?
 
     false
   end

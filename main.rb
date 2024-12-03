@@ -15,4 +15,4 @@ test.set("kite", "pink")
 test.set("lion", "golden")
 
 puts test.buckets
-p test.get("grape")
+p test.has?("hat")
