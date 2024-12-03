@@ -16,3 +16,5 @@ test.set("lion", "golden")
 
 puts test.buckets
 p test.entries
+test.set("lion", "pink")
+puts test.buckets

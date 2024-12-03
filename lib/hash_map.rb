@@ -27,12 +27,21 @@ class HashMap
 
   # key should be string
 
-  # node should be linked list to deal with collisions
   def set(key, value)
     index = hash(key) % @capacity
     raise IndexError if index.negative? || index >= @buckets.length
 
-    @buckets[index].append(key, value)
+    current = @buckets[index].head
+    if has?(key)
+      @buckets.size.times do
+        unless current.nil?
+          current.value = value if current.key == key
+          current = current.next_node
+        end
+      end
+    else
+      @buckets[index].append(key, value)
+    end
   end
 
   def get(key)
