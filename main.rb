@@ -15,4 +15,7 @@ test.set("kite", "pink")
 test.set("lion", "golden")
 
 puts test.buckets
-p test.has?("hat")
+p test.remove("hat")
+puts test.buckets
+test.clear
+p test

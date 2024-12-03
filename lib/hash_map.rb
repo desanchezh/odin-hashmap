@@ -60,16 +60,28 @@ class HashMap
   def remove(key)
     return nil unless has?(key)
 
-    deleted_value = get(key)
     index = hash(key) % @capacity
     raise IndexError if index.negative? || index >= @buckets.length
 
-    @buckets[index] = nil
-    deleted_value
+    current = @buckets[index].head
+    removed = []
+    @buckets.size.times do
+      next if current.nil?
+
+      # leftover empty node remains doing it like this
+      if current.key == key
+        removed << current.value
+        current.value = nil
+        current.key = nil
+      end
+      current = current.next_node
+    end
+    removed
   end
 
   def clear
-    @buckets = Array.new(16)
+    @buckets = []
+    create_buckets(@capacity)
   end
 
   def values
